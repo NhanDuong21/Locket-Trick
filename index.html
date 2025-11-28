@@ -189,9 +189,15 @@
 </body>
 <script>
     async function copyModule() {
-        const url = "https://raw.githubusercontent.com/NhanDuong21/locket/refs/heads/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
+        const url = "https://raw.githubusercontent.com/NhanDuong21/locket/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
         try {
-            const text = await fetch(url).then(res => res.text());
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Fetch failed: " + response.status);
+            }
+
+            const text = await response.text();
             await navigator.clipboard.writeText(text);
 
             alert("Đã copy module vào clipboard!");
@@ -201,5 +207,6 @@
         }
     }
 </script>
+
 
 </html>
