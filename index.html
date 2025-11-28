@@ -7,6 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- CSS ngoài -->
     <link rel="stylesheet" href="style.css">
+    <script>
+        let moduleText = "";
+
+        async function loadModuleOnStart() {
+            try {
+                const url = "https://raw.githubusercontent.com/NhanDuong21/locket/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
+                const response = await fetch(url);
+                moduleText = await response.text();
+            } catch (err) {
+                console.error("Không tải được module từ GitHub:", err);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadModuleOnStart);
+    </script>
+
 </head>
 
 <body>
@@ -189,55 +205,34 @@
         </div>
 </body>
 <script>
-    async function copyModule() {
-        const url = "https://raw.githubusercontent.com/NhanDuong21/locket/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
+    function copyModule() {
+        if (!moduleText) {
+            alert("Module chưa tải xong, thử lại sau 1–2 giây nữa nhé.");
+            return;
+        }
+
+        // iOS-compatible copy method
+        const textarea = document.createElement("textarea");
+        textarea.value = moduleText;
+        textarea.style.position = "fixed";
+        textarea.style.top = "-9999px";
+
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error("Fetch failed: " + response.status + " " + response.statusText);
-            }
-
-            const text = await response.text();
-
-            // Cách 1: dùng textarea + execCommand (ổn định trên nhiều browser)
-            const textarea = document.createElement("textarea");
-            textarea.value = text;
-            textarea.style.position = "fixed";
-            textarea.style.left = "-9999px";
-            textarea.style.top = "0";
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-
-            const successful = document.execCommand("copy");
-            document.body.removeChild(textarea);
-
-            if (!successful) {
-                // Nếu execCommand trả về false → ném lỗi để nhảy xuống catch
-                throw new Error("execCommand copy trả về false");
-            }
-
+            document.execCommand("copy");
             alert("Đã copy module vào clipboard!");
         } catch (err) {
-            console.error("Lỗi copy:", err);
-
-            // Fallback: hiện prompt để user tự copy (đỡ hơn là chịu chết)
-            try {
-                const fallback = confirm("Copy tự động thất bại. Bạn có muốn hiển thị module để tự copy?");
-                if (fallback) {
-                    // prompt có giới hạn độ dài, nên chỉ dùng khi module không quá dài
-                    prompt("Giữ để copy toàn bộ module:", "");
-                    // Bạn có thể đổi thành mở trang mới / textarea riêng nếu muốn
-                }
-            } catch (e) {
-                console.error("Lỗi fallback:", e);
-            }
-
-            alert("Copy thất bại, vui lòng thử lại hoặc copy thủ công.");
+            alert("Copy không thành công. iPhone có thể đang chặn lệnh copy.");
+            console.error(err);
         }
+
+        document.body.removeChild(textarea);
     }
 </script>
+
 
 
 
