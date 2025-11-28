@@ -176,9 +176,10 @@
             </div>
 
             <div class="step-actions">
-                <button class="btn-xs" onclick="copyModule()">
-        <span>📋</span> Copy module
-    </button>
+                <button class="btn-xs" onclick="copyModuleLink()">
+    <span>📋</span> Copy module
+</button>
+
 
                 <a href="https://youtube.com/shorts/2n_5bcSeMI8?si=ZyhH4RnEfURCe51F" class="btn-xs">
                     <span>🎬</span> Xem video hướng dẫn
@@ -203,50 +204,52 @@
             </div>
         </footer>
         </div>
-</body>
-<script>
-    function copyModule() {
-        const url = "https://raw.githubusercontent.com/NhanDuong21/locket/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
 
-        // Trình duyệt hỗ trợ Clipboard API (https, đa số máy)
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(url)
-                .then(() => {
-                    alert("Đã copy link module vào clipboard!");
-                })
-                .catch(err => {
-                    console.error("Lỗi clipboard API:", err);
-                    fallbackCopy(url);
-                });
-        } else {
-            // Fallback cho trình duyệt/in-app browser khó tính (Telegram, FB...)
-            fallbackCopy(url);
-        }
-    }
+        <script>
+            function copyModuleLink() {
+                const url = "https://raw.githubusercontent.com/NhanDuong21/locket/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
 
-    function fallbackCopy(text) {
-        try {
-            const textarea = document.createElement("textarea");
-            textarea.value = text;
-            textarea.style.position = "fixed";
-            textarea.style.top = "-9999px";
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-            const ok = document.execCommand("copy");
-            document.body.removeChild(textarea);
-
-            if (ok) {
-                alert("Đã copy link module vào clipboard!");
-            } else {
-                // Nếu vẫn không được, hiện cho user tự copy
-                prompt("Copy link module thủ công:", text);
+                // Trình duyệt hỗ trợ Clipboard API (https, đa số máy)
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(url)
+                        .then(() => {
+                            alert("Đã copy LINK module vào clipboard!");
+                        })
+                        .catch(err => {
+                            console.error("Lỗi clipboard API:", err);
+                            fallbackCopyLink(url);
+                        });
+                } else {
+                    // Fallback cho in-app browser (Telegram, FB,...)
+                    fallbackCopyLink(url);
+                }
             }
-        } catch (err) {
-            console.error("Lỗi fallback copy:", err);
-            prompt("Copy link module thủ công:", text);
-        }
-    }
-</script>
+
+            function fallbackCopyLink(text) {
+                try {
+                    const textarea = document.createElement("textarea");
+                    textarea.value = text;
+                    textarea.style.position = "fixed";
+                    textarea.style.top = "-9999px";
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    const ok = document.execCommand("copy");
+                    document.body.removeChild(textarea);
+
+                    if (ok) {
+                        alert("Đã copy LINK module vào clipboard!");
+                    } else {
+                        // Nếu vẫn không được, cho user tự copy
+                        prompt("Copy link module thủ công:", text);
+                    }
+                } catch (err) {
+                    console.error("Lỗi fallback copy:", err);
+                    prompt("Copy link module thủ công:", text);
+                }
+            }
+        </script>
+
+</body>
 
 </html>
