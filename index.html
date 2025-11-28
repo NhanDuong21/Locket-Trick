@@ -160,9 +160,10 @@
             </div>
 
             <div class="step-actions">
-                <a href="https://raw.githubusercontent.com/NhanDuong21/locket/refs/heads/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng" class="btn-xs">
-                    <span>📋</span> Copy module
-                </a>
+                <button class="btn-xs" onclick="copyModule()">
+    <span>📋</span> Copy module
+</button>
+
                 <a href="https://youtube.com/shorts/2n_5bcSeMI8?si=ZyhH4RnEfURCe51F" class="btn-xs">
                     <span>🎬</span> Xem video hướng dẫn
                 </a>
@@ -186,5 +187,19 @@
         </footer>
         </div>
 </body>
+<script>
+    async function copyModule() {
+        const url = "https://raw.githubusercontent.com/NhanDuong21/locket/refs/heads/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
+        try {
+            const text = await fetch(url).then(res => res.text());
+            await navigator.clipboard.writeText(text);
+
+            alert("Đã copy module vào clipboard!");
+        } catch (err) {
+            alert("Copy thất bại. Kiểm tra lại link module.");
+            console.error(err);
+        }
+    }
+</script>
 
 </html>
