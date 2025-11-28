@@ -190,20 +190,32 @@
 <script>
     async function copyModule() {
         const url = "https://raw.githubusercontent.com/NhanDuong21/locket/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
+
         try {
             const response = await fetch(url);
-
             if (!response.ok) {
-                throw new Error("Fetch failed: " + response.status);
+                throw new Error("Fetch failed: " + response.status + " " + response.statusText);
             }
 
             const text = await response.text();
-            await navigator.clipboard.writeText(text);
+
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                const textarea = document.createElement("textarea");
+                textarea.value = text;
+                textarea.style.position = "fixed";
+                textarea.style.left = "-9999px";
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textarea);
+            }
 
             alert("Đã copy module vào clipboard!");
         } catch (err) {
-            alert("Copy thất bại. Kiểm tra lại link module.");
-            console.error(err);
+            console.error("Lỗi copy:", err);
+            alert("Copy thất bại: " + err.message);
         }
     }
 </script>
