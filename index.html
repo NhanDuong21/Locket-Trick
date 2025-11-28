@@ -206,34 +206,47 @@
 </body>
 <script>
     function copyModule() {
-        if (!moduleText) {
-            alert("Module chưa tải xong, thử lại sau 1–2 giây nữa nhé.");
-            return;
+        const url = "https://raw.githubusercontent.com/NhanDuong21/locket/main/LocketGold_By_Nh%C3%A2nD%C6%B0%C6%A1ng";
+
+        // Trình duyệt hỗ trợ Clipboard API (https, đa số máy)
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(url)
+                .then(() => {
+                    alert("Đã copy link module vào clipboard!");
+                })
+                .catch(err => {
+                    console.error("Lỗi clipboard API:", err);
+                    fallbackCopy(url);
+                });
+        } else {
+            // Fallback cho trình duyệt/in-app browser khó tính (Telegram, FB...)
+            fallbackCopy(url);
         }
+    }
 
-        // iOS-compatible copy method
-        const textarea = document.createElement("textarea");
-        textarea.value = moduleText;
-        textarea.style.position = "fixed";
-        textarea.style.top = "-9999px";
-
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-
+    function fallbackCopy(text) {
         try {
-            document.execCommand("copy");
-            alert("Đã copy module vào clipboard!");
-        } catch (err) {
-            alert("Copy không thành công. iPhone có thể đang chặn lệnh copy.");
-            console.error(err);
-        }
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.top = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            const ok = document.execCommand("copy");
+            document.body.removeChild(textarea);
 
-        document.body.removeChild(textarea);
+            if (ok) {
+                alert("Đã copy link module vào clipboard!");
+            } else {
+                // Nếu vẫn không được, hiện cho user tự copy
+                prompt("Copy link module thủ công:", text);
+            }
+        } catch (err) {
+            console.error("Lỗi fallback copy:", err);
+            prompt("Copy link module thủ công:", text);
+        }
     }
 </script>
-
-
-
 
 </html>
