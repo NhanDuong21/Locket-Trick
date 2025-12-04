@@ -502,6 +502,12 @@ header {
     text-decoration: none;
 }
 
+.ios-btn {
+    background: #007aff;
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
 
 /* Mobile: cho full width nếu thích */
 
